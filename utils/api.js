@@ -55,7 +55,6 @@ export const addCardToDeck = async (deckTitle, card) => {
       },
     })
   );
-  console.log(results, "coming from api");
 };
 
 export const saveDeckTitle = async (title) => {

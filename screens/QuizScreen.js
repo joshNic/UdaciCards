@@ -2,13 +2,14 @@ import React from "react";
 import { getDeck } from "../utils/api";
 import { Button, Text, View, StyleSheet } from "react-native";
 import { setLocalNotification, clearLocalNotification } from "../utils/helpers";
+import QuizInfo from '../components/QuizInfo'
 
 export default class QuizScreen extends React.Component {
   state = {
-    questions: null,
     correct: 0,
-    currentQuestion: 0,
+    questions: null,
     showQuestion: true,
+    currentQuestion: 0,
   };
 
   componentDidMount() {
@@ -58,89 +59,36 @@ export default class QuizScreen extends React.Component {
       showQuestion: true,
     }));
   };
-
-  renderInfo() {
-    if (this.state.questions === null || this.state.questions === undefined) {
-      return null;
-    } else if (this.state.questions.length === 0) {
-      return (
-        <View>
-          <Text style={styles.text}>There is no questions here</Text>
-        </View>
-      );
-    } else if (this.state.questions.length !== this.state.currentQuestion) {
-      const question = this.state.questions[this.state.currentQuestion];
-      return (
-        <View>
-          <Text style={styles.textProgress}>
-            Progress: {this.state.currentQuestion + 1} of{" "}
-            {this.state.questions.length}
-          </Text>
-          <Text style={styles.text}>
-            {this.state.showQuestion ? question.question : question.answer}
-          </Text>
-          <View style={styles.button}>
-            <View style={styles.button}>
-              <Button
-                title={
-                  this.state.showQuestion ? "Show Answer" : "Show Question"
-                }
-                onPress={this.hideShowQuestion}
-              />
-            </View>
-            <View style={styles.button}>
-              <Button title={"Correct"} onPress={this.markAsCorrect} />
-            </View>
-            <View style={styles.button}>
-              <Button title={"Incorrect"} onPress={this.quizProgress} />
-            </View>
-          </View>
-        </View>
-      );
-    } else {
-      return (
-        <View>
-          <Text style={styles.text}>That's the end of this deck!</Text>
-          <Text style={styles.text}>
-            Score: You have answered{" "}
-            {Math.round(
-              (this.state.correct / this.state.questions.length) * 100
-            )}
-            % Correct!
-          </Text>
-          <View style={styles.button}>
-            <Button
-              title={"Restart Quiz"}
-              onPress={() => {
-                this.shuffle(this.state.questions);
+  restart=()=>{
+    this.shuffle(this.state.questions);
                 this.setState({
                   correct: 0,
                   currentQuestion: 0,
                   showQuestion: true,
                 });
-              }}
-            />
-          </View>
-          <View style={styles.button}>
-            <Button
-              title={"Back to Deck"}
-              onPress={(id) =>
-                this.props.navigation.navigate("Details", {
-                  id: this.props.route.params.id,
-                })
-              }
-            />
-          </View>
-        </View>
-      );
-    }
   }
-
+  navigat=()=>{
+    this.props.navigation.navigate("Details", {
+      id: this.props.route.params.id,
+    })
+  }
   render() {
     return (
       <View style={styles.container}>
         {this.state.questions ? (
-          this.renderInfo()
+          <QuizInfo
+          questions={this.state.questions}
+          shuffle={this.shuffle}
+          markAsCorrect={this.markAsCorrect}
+          quizProgress={this.quizProgress}
+          hideShowQuestion={this.hideShowQuestion}
+          currentQuestion={this.state.currentQuestion}
+          correct={this.state.correct}
+          showQuestion={this.state.showQuestion}
+          restart={this.restart}
+          navigat={this.navigat}
+          
+          />
         ) : (
           <View>
             <Text>Loading....</Text>
