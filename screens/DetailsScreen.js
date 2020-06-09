@@ -14,6 +14,14 @@ export default class DetailsScreen extends React.Component {
       });
     });
   }
+  componentDidUpdate(){
+    const { route } = this.props;
+    getDeck(route.params.id).then((result) => {
+      this.setState({
+        deck: result,
+      });
+    });
+}
   render() {
     return (
       <View style={styles.container}>
@@ -43,26 +51,6 @@ export default class DetailsScreen extends React.Component {
             }
             />
             </View>
-            {/* <TouchableOpacity
-              style={styles.button}
-              onPress={(id) =>
-                this.props.navigation.navigate("Add Card", {
-                  id: this.props.route.params.id,
-                })
-              }
-            >
-              <Text style={styles.buttonText}>Add Card</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={(id) =>
-                this.props.navigation.navigate("Quiz", {
-                  id: this.props.route.params.id,
-                })
-              }
-            >
-              <Text style={styles.buttonText}>Start Quiz</Text>
-            </TouchableOpacity> */}
           </View>
         ) : (
           <Text style={styles.text}>Loading....</Text>

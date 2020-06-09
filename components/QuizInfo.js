@@ -54,10 +54,9 @@ const QuizInfo=(props)=>{
             <View style={styles.button}>
               <Button
                 title={"Restart Quiz"}
-                onPress={() => {
-                  props.shuffle(props.questions);
+                onPress={
                   props.restart
-                }}
+                }
               />
             </View>
             <View style={styles.button}>

@@ -22,8 +22,9 @@ export default class AddCardScreen extends Component{
             answer:this.state.answer
         }
         addCardToDeck(deckTitle, card)
+        
         this.setState({ question: '', answer: '' });
-        navigation.navigate('Home')
+        navigation.navigate('Details',{id:deckTitle})
     }
     render(){
         return(
